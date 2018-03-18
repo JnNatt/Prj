@@ -5,4 +5,6 @@ public class ScaleGroup : MonoBehaviour
 {
     public Text MainLabel;
     public Text MiddleLabel;
+    public int start;
+    public int gap;
 }

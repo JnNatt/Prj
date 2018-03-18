@@ -352,6 +352,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainLabel: {fileID: 114255888208381664}
   MiddleLabel: {fileID: 114996521326926922}
+  start: 0
+  gap: 0
 --- !u!114 &114255888208381664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -532,7 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.45588237, g: 0.45588237, b: 0.45588237, a: 1}
+  m_Color: {r: 1, g: 0.33088237, b: 0.33088237, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
