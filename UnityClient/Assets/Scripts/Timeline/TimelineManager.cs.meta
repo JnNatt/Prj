@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: eaab96fa258cb92429cef19e888ea120
+timeCreated: 1519664682
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - categoryDropdown: {instanceID: 0}
+  - content: {instanceID: 0}
+  - mapBtn: {instanceID: 0}
+  - timePointPrefab: {fileID: 114616667610801366, guid: 9da25bad77c36df4b87d7dab30e2db7b,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
