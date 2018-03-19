@@ -87,7 +87,7 @@ public class TimelineScaleManager : MonoBehaviour
             start = -start;
         }
         scaleSet.MainLabel.text = GetNumber(start, beforeHistory);
-        var middle = start + gap / 2;
+        var middle = start - gap / 2;
         scaleSet.MiddleLabel.text = GetNumber(middle, beforeHistory);
     }
 
