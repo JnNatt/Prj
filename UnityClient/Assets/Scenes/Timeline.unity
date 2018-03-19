@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 14272110}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 14272110}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -1251,7 +1251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   categoryDropdown: {fileID: 2017658170}
   scrollView: {fileID: 1097298384}
-  TimelineScaleManager: {fileID: 0}
+  timelineScaleManager: {fileID: 1097298385}
   mapBtn: {fileID: 1904102225}
   timePointPrefab: {fileID: 114616667610801366, guid: 9da25bad77c36df4b87d7dab30e2db7b,
     type: 2}
@@ -1372,6 +1372,8 @@ MonoBehaviour:
   startPoint: -7000000
   endPoint: 2025
   scaleSetting:
+  - gapPerSet: 4000000
+    setCount: 1
   - gapPerSet: 1000000
     setCount: 2
   - gapPerSet: 500000
@@ -1381,16 +1383,14 @@ MonoBehaviour:
   - gapPerSet: 50000
     setCount: 1
   - gapPerSet: 10000
-    setCount: 2
+    setCount: 4
   - gapPerSet: 5000
     setCount: 1
   - gapPerSet: 1000
     setCount: 4
   - gapPerSet: 500
-    setCount: 1
+    setCount: 2
   - gapPerSet: 100
-    setCount: 4
-  - gapPerSet: 50
     setCount: -1
 --- !u!1 &1330496841
 GameObject:

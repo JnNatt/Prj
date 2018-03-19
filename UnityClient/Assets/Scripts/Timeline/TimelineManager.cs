@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +14,7 @@ public class TimelineManager : MonoBehaviour
 
     public Dropdown categoryDropdown;
     public ScrollRect scrollView;
-    public TimelineScaleManager TimelineScaleManager;
+    public TimelineScaleManager timelineScaleManager;
     public Button mapBtn;
     public TimePoint timePointPrefab;
 
@@ -43,16 +42,20 @@ public class TimelineManager : MonoBehaviour
     {
         try
         {
-            /*categoryDropdown.ClearOptions();
-            var list = timelineInfo.Categories.Select(cat => cat.name).ToList();
-            categoryDropdown.AddOptions(list);
+            timelineScaleManager.Init();
+            categoryDropdown.ClearOptions();
+            if (timelineInfo != null && timelineInfo.Categories != null)
+            {
+                var list = timelineInfo.Categories.Select(cat => cat.name).ToList();
+                categoryDropdown.AddOptions(list);
+            }
             categoryDropdown.onValueChanged.AddListener(index =>
             {
                 Debug.Log(index);
-                LoadCategory(index);
-            });*/
-            
-            //LoadCategory(0);
+                //JumpToCategory(index);
+            });
+
+            //JumpToCategory(0);
 
             SceneLoader.Instance.FadeIn(.5f);
         }
@@ -62,6 +65,11 @@ public class TimelineManager : MonoBehaviour
             throw;
         }
         
+    }
+
+    private void JumpToCategory(int index)
+    {
+        throw new NotImplementedException();
     }
 
     /*public void LoadCategory(int index)
