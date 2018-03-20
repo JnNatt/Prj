@@ -11,6 +11,7 @@ public class TimelineManager : MonoBehaviour
 
     public static TimelineInfo timelineInfo;
     private static readonly List<TimePoint> timelineList = new List<TimePoint>();
+    public static List<TimePoint> TimelineList { get { return timelineList; } }
 
     public Dropdown categoryDropdown;
     public ScrollRect scrollView;
@@ -46,6 +47,7 @@ public class TimelineManager : MonoBehaviour
             categoryDropdown.ClearOptions();
             if (timelineInfo != null && timelineInfo.Categories != null)
             {
+                timelineScaleManager.InitTimepoint(timelineInfo.Categories);
                 var list = timelineInfo.Categories.Select(cat => cat.name).ToList();
                 categoryDropdown.AddOptions(list);
             }

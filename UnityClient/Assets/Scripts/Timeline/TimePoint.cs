@@ -12,6 +12,8 @@ public class TimePoint : MonoBehaviour
     [SerializeField] private Button west;
     [SerializeField] private Button thai;
 
+    [SerializeField] private bool isTitlePoint;
+
     public string titleText;
     public Sprite WestSprite, ThaiSprite;
 
@@ -19,6 +21,7 @@ public class TimePoint : MonoBehaviour
 
     private void Start()
     {
+        if (isTitlePoint) return;
         point.onClick.AddListener(() =>
         {
             
@@ -27,6 +30,7 @@ public class TimePoint : MonoBehaviour
 
     public void SetData(TimepointData data)
     {
+        if (data == null) return;
         if (data.type == TimelineType.Th)
         {
             dataTh = data;
@@ -41,6 +45,7 @@ public class TimePoint : MonoBehaviour
 
     public void ResetData()
     {
+        if (isTitlePoint) return;
         dataW = null;
         dataTh = null;
         west.gameObject.SetActive(false);
@@ -59,21 +64,24 @@ public class TimePoint : MonoBehaviour
     public void SetThai(Sprite icon, string title)
     {
         SetDetail(thai, icon, titleThai, title);
-        thai.gameObject.SetActive(true);
-        titleThai.gameObject.SetActive(true);
     }
 
     public void SetWest(Sprite icon, string title)
     {
+        if (isTitlePoint) return;
         SetDetail(west, icon, titleWest, title);
-        west.gameObject.SetActive(true);
-        titleWest.gameObject.SetActive(true);
     }
 
     private void SetDetail(Button icon, Sprite sprite, Text text, string title)
     {
-        icon.GetComponent<Image>().sprite = sprite;
+        if (sprite)
+        {
+            icon.GetComponent<Image>().sprite = sprite;
+            icon.gameObject.SetActive(true);
+        }
+
         text.text = title;
+        text.gameObject.SetActive(true);
     }
 
     
