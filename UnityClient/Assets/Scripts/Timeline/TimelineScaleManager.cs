@@ -70,6 +70,9 @@ public class TimelineScaleManager : MonoBehaviour
     {
         public TimepointData th;
         public TimepointData w;
+        public float offset;
+
+        public bool isSelected;
 
         public int order
         {
@@ -87,6 +90,12 @@ public class TimelineScaleManager : MonoBehaviour
                 th = data;
             else
                 w = data;
+        }
+
+        public void Deselect()
+        {
+            TimePoint.OnDeselectE -= Deselect;
+            isSelected = false;
         }
     }
 
@@ -130,6 +139,7 @@ public class TimelineScaleManager : MonoBehaviour
             AddTimepointTitleData(cat.name, cat.startPoint);
             var order = -1;
             TimepointDataSet current = null;
+            var iconOffset = 0f;
             for (int j = 0; j < cat.timeline.Count; j++)
             {
                 var data = cat.timeline[j];
@@ -137,6 +147,22 @@ public class TimelineScaleManager : MonoBehaviour
                 {
                     order = data.order;
                     current = AddTimepointData(data);
+                    current.offset = iconOffset;
+                    iconOffset += 200f;
+                    if (iconOffset > 400f)
+                    {
+                        iconOffset = 0f;
+                    }
+                    /*var item = current;
+                    TimePoint.OnSelectE += point =>
+                    {
+                        var temp = point.dataTh ?? point.dataW;
+                        if (temp.order == item.order)
+                        {
+                            item.isSelected = true;
+                            TimePoint.OnDeselectE += item.Deselect;
+                        }
+                    };*/
                 }
                 current.SetData(data);
             }
@@ -254,6 +280,7 @@ public class TimelineScaleManager : MonoBehaviour
         if (timepoint == null)
         {
             timepoint = Instantiate(prefab, TimePointGroup);
+            timepoint.Init();
             pool.Add(timepoint);
         }
         timepoint.gameObject.SetActive(true);
@@ -693,6 +720,11 @@ public class TimelineScaleManager : MonoBehaviour
         item.ResetData();
         item.SetData(data.th);
         item.SetData(data.w);
+        item.SetIconOffset(data.offset);
+        if (data.isSelected)
+        {
+            item.OnSelect();
+        }
         var rectT = (RectTransform)item.transform;
         rectT.anchoredPosition = new Vector2(0, data.positionInTimeline);
         //Only hide scale label if there is data on left side (Thai history)
