@@ -17,7 +17,7 @@ class CategoryT extends Model
     protected $primaryKey = 'id_category_lesson';
 
     protected $appends = ['category_id', 'name', 'timeline'];
-    protected $visible = ['category_id', 'name', 'timeline'];
+    protected $visible = ['category_id', 'name', 'start_point', 'timeline'];
 
     public function getCategoryIdAttribute(){
         return $this->attributes[$this->primaryKey];

@@ -406,7 +406,7 @@ public class TimelineScaleManager : MonoBehaviour
 
     private string GetNumber(int data, bool beforeHistory)
     {
-        string number = data.ToString();
+        string number = data.ToString("##,###");
         foreach (Abbreviation abbre in abbreForNumber)
         {
             var amount = abbre.amount;
