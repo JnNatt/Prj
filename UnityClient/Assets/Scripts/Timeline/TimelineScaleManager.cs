@@ -699,11 +699,11 @@ public class TimelineScaleManager : MonoBehaviour
         if (data.th != null)
         {
             var scale = scaleMapping[data.scale];
-            if (Mathf.Abs(GetPositionOnTimeScale(data.scale.Start) - data.positionInTimeline + _timepointOffset) >= threshold)
+            if (Mathf.Abs(GetPositionOnTimeScale(data.scale.Start) - data.positionInTimeline + _timepointOffset) <= threshold)
             {
                 scale.MainLabel.gameObject.SetActive(false);
             }
-            else if (Math.Abs(GetPositionOnTimeScale(data.scale.Middle) - data.positionInTimeline + _timepointOffset) >= threshold)
+            else if (Math.Abs(GetPositionOnTimeScale(data.scale.Middle) - data.positionInTimeline + _timepointOffset) <= threshold)
             {
                 scale.MiddleLabel.gameObject.SetActive(false);
             }
