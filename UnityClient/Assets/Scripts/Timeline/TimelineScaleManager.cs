@@ -68,11 +68,17 @@ public class TimelineScaleManager : MonoBehaviour
 
     public class TimepointDataSet
     {
+        public int Id;
         public TimepointData th;
         public TimepointData w;
         public float offset;
 
-        public bool isSelected;
+        public bool IsSelected
+        {
+            get { return selected == this; }
+        }
+
+        public static TimepointDataSet selected;
 
         public int order
         {
@@ -90,12 +96,6 @@ public class TimelineScaleManager : MonoBehaviour
                 th = data;
             else
                 w = data;
-        }
-
-        public void Deselect()
-        {
-            TimePoint.OnDeselectE -= Deselect;
-            isSelected = false;
         }
     }
 
@@ -153,16 +153,6 @@ public class TimelineScaleManager : MonoBehaviour
                     {
                         iconOffset = 0f;
                     }
-                    /*var item = current;
-                    TimePoint.OnSelectE += point =>
-                    {
-                        var temp = point.dataTh ?? point.dataW;
-                        if (temp.order == item.order)
-                        {
-                            item.isSelected = true;
-                            TimePoint.OnDeselectE += item.Deselect;
-                        }
-                    };*/
                 }
                 current.SetData(data);
             }
@@ -196,6 +186,11 @@ public class TimelineScaleManager : MonoBehaviour
 
         nextTitle = timepointTitleIndex;
         nextTimepoint = timepointIndex;
+
+        TimePoint.OnSelectE += point =>
+        {
+            TimepointDataSet.selected = timepointData.First(data => data.Id == point.Id);
+        };
     }
     private void AddTimepointTitleData(string title, int point)
     {
@@ -223,6 +218,7 @@ public class TimelineScaleManager : MonoBehaviour
             scale = scale
         };
         dataSet.SetData(data);
+        dataSet.Id = timepointData.Count;
         timepointData.Add(dataSet);
         return dataSet;
     }
@@ -281,6 +277,7 @@ public class TimelineScaleManager : MonoBehaviour
         {
             timepoint = Instantiate(prefab, TimePointGroup);
             timepoint.Init();
+            timepoint.Id = pool.Count;
             pool.Add(timepoint);
         }
         timepoint.gameObject.SetActive(true);
@@ -586,7 +583,7 @@ public class TimelineScaleManager : MonoBehaviour
 
     private void PreviousTimepointTitleItem()
     {
-        while (nextTitle > 1 && !IsTimepointNotBelowView(timepointTitleData[nextTitle - 1], _timepointOffset))
+        while (nextTitle > 0 && !IsTimepointNotBelowView(timepointTitleData[nextTitle - 1], _timepointOffset))
         {
             titleMapping[timepointTitleData[nextTitle - 1]].gameObject.SetActive(false);
             nextTitle--;
@@ -616,7 +613,7 @@ public class TimelineScaleManager : MonoBehaviour
 
     private void PreviousTimepointItem()
     {
-        while (nextTimepoint > 1 && !IsTimepointNotBelowView(timepointData[nextTimepoint - 1], _timepointOffset))
+        while (nextTimepoint > 0 && !IsTimepointNotBelowView(timepointData[nextTimepoint - 1], _timepointOffset))
         {
             timepointMapping[timepointData[nextTimepoint - 1]].gameObject.SetActive(false);
             nextTimepoint--;
@@ -717,11 +714,12 @@ public class TimelineScaleManager : MonoBehaviour
 
     private void TimepointLoaded(TimePoint item, TimepointDataSet data)
     {
+        item.Id = data.Id;
         item.ResetData();
         item.SetData(data.th);
         item.SetData(data.w);
         item.SetIconOffset(data.offset);
-        if (data.isSelected)
+        if (data.IsSelected)
         {
             item.OnSelect();
         }

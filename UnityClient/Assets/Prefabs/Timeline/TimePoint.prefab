@@ -338,6 +338,7 @@ MonoBehaviour:
   titleText: 
   WestSprite: {fileID: 21300000, guid: e0ec66e3157f48a47a7976899f2edb99, type: 3}
   ThaiSprite: {fileID: 21300000, guid: 648dbcbcb84a7684687cbeefcdfd2d36, type: 3}
+  Id: 0
 --- !u!114 &114740225056717218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -657,7 +658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0.315, y: 0.5}
-  m_AnchoredPosition: {x: 173.5, y: 0}
+  m_AnchoredPosition: {x: 203.5, y: 0}
   m_SizeDelta: {x: -347, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224524690417429024
@@ -712,7 +713,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.685, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -173.5, y: 0}
+  m_AnchoredPosition: {x: -203.5, y: 0}
   m_SizeDelta: {x: -347, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224804785793557096

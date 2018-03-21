@@ -23,8 +23,9 @@ public class TimePoint : MonoBehaviour
     [SerializeField] public Sprite ThaiSprite;
 
     public TimepointData dataW, dataTh;
+    public int Id;
 
-    private float offsetMin, offsetMax, baseLineWidth;
+    private float baseLineWidth;
     private Vector2 baseAnchor;
 
     private void Start()
@@ -53,8 +54,6 @@ public class TimePoint : MonoBehaviour
         if (isTitlePoint) return;
 
         var iconRect = (RectTransform)thai.transform;
-        offsetMin = iconRect.offsetMin.x;
-        offsetMax = iconRect.offsetMax.x;
         baseLineWidth = lineTh.sizeDelta.x;
         baseAnchor = iconRect.anchoredPosition;
     }
