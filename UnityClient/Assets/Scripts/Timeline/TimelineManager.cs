@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
@@ -57,11 +56,7 @@ public class TimelineManager : MonoBehaviour
                 Debug.Log(index);
                 JumpToCategory(index);
             });
-            timelineScaleManager.OnTimepointClickE += data =>
-            {
-                ShowPopup(data);
-
-            };
+            timelineScaleManager.OnTimepointClickE += ShowPopup;
 
             JumpToCategory(0);
 
