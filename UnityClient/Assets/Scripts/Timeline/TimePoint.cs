@@ -102,12 +102,12 @@ public class TimePoint : MonoBehaviour
         if (data.type == TimelineType.Th)
         {
             dataTh = data;
-            SetThai(null, data.title);
+            SetThai(PictureMapper.GetIconPic(data.id), data.title);
         }
         else
         {
             dataW = data;
-            SetWest(null, data.title);
+            SetWest(PictureMapper.GetIconPic(data.id), data.title);
         }
     }
 
@@ -151,7 +151,7 @@ public class TimePoint : MonoBehaviour
 
     private void SetDetail(Button icon, Sprite sprite, Text text, string title)
     {
-        if (sprite)
+        if (sprite && !isTitlePoint)
         {
             icon.GetComponent<Image>().sprite = sprite;
             icon.gameObject.SetActive(true);

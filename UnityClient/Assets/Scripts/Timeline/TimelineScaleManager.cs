@@ -22,8 +22,6 @@ public class TimelineScaleManager : MonoBehaviour
     [SerializeField][Tooltip("This is for determine how close must timepoint be to hide the label of time scale")]
     private float threshold = 100f;
 
-    private float timescaleGroupOffset;
-
     [SerializeField] private string beforeHistoryFormat = "{0} ปีก่อนปัจจุบัน";
     [SerializeField] private string historyFormat = "ค.ศ.{0}";
     [SerializeField] private List<Abbreviation> abbreForNumber;
@@ -118,7 +116,6 @@ public class TimelineScaleManager : MonoBehaviour
         var height = TimeScaleGroup.rect.height;
         _scrollView.content.sizeDelta = new Vector2(_scrollView.content.sizeDelta.x, height);
         Line.sizeDelta = new Vector2(Line.sizeDelta.x, height + offset);
-        timescaleGroupOffset = TimeScaleGroup.anchoredPosition.y;
     }
 
     public void JumpToCategory(int id)
@@ -173,6 +170,14 @@ public class TimelineScaleManager : MonoBehaviour
         _timepointGroupOffset = TimePointGroup.anchoredPosition.y;
         timepointData.Sort((a, b) => Mathf.RoundToInt(b.positionInTimeline - a.positionInTimeline));
         timepointTitleData.Sort((a, b) => Mathf.RoundToInt(b.positionInTimeline - a.positionInTimeline));
+        //Assign Id for data (temp code)
+        
+        int index = 0;
+        foreach (var data in timepointData)
+        {
+            if (data.th != null) data.th.id = index++;
+            if (data.w != null) data.w.id = index++;
+        }
         //Init visible timepoints and pool
         int timepointTitleIndex;
         for (timepointTitleIndex = 0; timepointTitleIndex < timepointTitleData.Count; timepointTitleIndex++)

@@ -2,6 +2,7 @@
 
 public class TimepointData
 {
+    public int id;
     public int category;
     public TimelineType type;
     public int order;

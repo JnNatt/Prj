@@ -28,7 +28,7 @@ public class PictureMapper : MonoBehaviour
         }
     }
 
-    public Sprite GetIconPic(int timepointId)
+    public static Sprite GetIconPic(int timepointId)
     {
         if (PictureMapping.ContainsKey(timepointId))
         {
@@ -36,7 +36,7 @@ public class PictureMapper : MonoBehaviour
         }
         return null;
     }
-    public Sprite GetDetailPic(int timepointId)
+    public static Sprite GetDetailPic(int timepointId)
     {
         if (PictureMapping.ContainsKey(timepointId))
         {

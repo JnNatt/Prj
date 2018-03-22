@@ -32,8 +32,18 @@ public class DetailPopup : MonoBehaviour
     {
         titleText.text = TimelineManager.timelineInfo.Categories.First(cat => cat.id == data.category).name;
         detailText.text = data.description;
-        //TODO : set picture
+        var image = PictureMapper.GetDetailPic(data.id);
+        if (image)
+        {
+            detailImage.sprite = image;
+            detailImage.gameObject.SetActive(true);
+        }
+        /*else
+        {
+            detailImage.gameObject.SetActive(false);
+        }*/
         //TODO : set audio
+        Canvas.ForceUpdateCanvases();
     }
 
     public void ShowPopup()
@@ -90,7 +100,7 @@ public class DetailPopup : MonoBehaviour
         var inputModule = (CustomStandaloneInputModule) EventSystem.current.currentInputModule;
         while (true)
         {
-            if (inputModule.input.GetMouseButton(0))
+            if (inputModule.input.GetMouseButtonDown(0))
             {
                 var hover = CustomStandaloneInputModule.GetPointerEventData().hovered;
                 var hidePopup = hover.Contains(blocker.gameObject);
