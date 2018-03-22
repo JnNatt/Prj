@@ -42,8 +42,9 @@ public class DetailPopup : MonoBehaviour
         {
             detailImage.gameObject.SetActive(false);
         }*/
-        //TODO : set audio
         Canvas.ForceUpdateCanvases();
+        scrollRect.SetLayoutVertical();
+        //TODO : set audio
     }
 
     public void ShowPopup()
