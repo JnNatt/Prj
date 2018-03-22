@@ -927,6 +927,7 @@ GameObject:
   - component: {fileID: 1646440757}
   - component: {fileID: 1646440756}
   - component: {fileID: 1646440760}
+  - component: {fileID: 1646440761}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1032,3 +1033,14 @@ MonoBehaviour:
   SigninBtn: {fileID: 1213233314}
   SignupBtn: {fileID: 1213233313}
   BackBtn: {fileID: 524452076}
+--- !u!114 &1646440761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1646440755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3b2bbb11b6c2445b6aea798c11d062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

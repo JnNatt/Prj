@@ -16,12 +16,14 @@ public class DetailPopup : MonoBehaviour
 
     public float delayTime;
 
-    private RectTransform _rectT;
+    private Image _fade;
     private Vector2 _originalPosition;
+    private Color _originalColor;
 	void Start ()
 	{
-	    _rectT = (RectTransform) transform;
+	    _fade = blocker.GetComponent<Image>();
 	    _originalPosition = popupObj.anchoredPosition;
+	    _originalColor = _fade.color;
 
 	    HidePopup(true);
 	}
@@ -58,19 +60,28 @@ public class DetailPopup : MonoBehaviour
     private IEnumerator _currentTransition;
     private IEnumerator Translate(bool show, float time)
     {
+
         var t = time;
+        var timeGap = (time > 0 ? time : 1);
         var startPoint = popupObj.anchoredPosition;
         var endPoint = show ? _originalPosition : Vector2.zero;
         var distance = endPoint.y - startPoint.y;
-        var speed = distance / (time > 0 ? time : 1);
+        var speed = distance / timeGap;
+
+        var startAlpha = _fade.color.a;
+        var endAlpha = show ? _originalColor.a : 0f;
+        distance = endAlpha - startAlpha;
+        var fadeSpeed = distance / timeGap;
 
         while (t > 0)
         {
             popupObj.anchoredPosition += Vector2.up * speed * Time.deltaTime;
+            _fade.color = new Color(0, 0, 0, _fade.color.a + fadeSpeed * Time.deltaTime);
             yield return null;
             t -= Time.deltaTime;
         }
         popupObj.anchoredPosition = endPoint;
+        _fade.color = new Color(0, 0, 0, endAlpha);
         _currentTransition = null;
     }
 
