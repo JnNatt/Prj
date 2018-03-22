@@ -19,6 +19,7 @@ public class TimelineManager : MonoBehaviour
     public Button mapBtn;
     public TimePoint timePointPrefab;
 
+    public DetailPopup popup;
 
 	void Start ()
 	{
@@ -54,10 +55,15 @@ public class TimelineManager : MonoBehaviour
             categoryDropdown.onValueChanged.AddListener(index =>
             {
                 Debug.Log(index);
-                //JumpToCategory(index);
+                JumpToCategory(index);
             });
+            timelineScaleManager.OnTimepointClickE += data =>
+            {
+                ShowPopup(data);
 
-            //JumpToCategory(0);
+            };
+
+            JumpToCategory(0);
 
             SceneLoader.Instance.FadeIn(.5f);
         }
@@ -71,49 +77,12 @@ public class TimelineManager : MonoBehaviour
 
     private void JumpToCategory(int index)
     {
-        throw new NotImplementedException();
+        timelineScaleManager.JumpToCategory(index);
     }
 
-    /*public void LoadCategory(int index)
+    private void ShowPopup(TimepointData data)
     {
-        //This logic is based on assumption that the list is ordered by order number
-        var list = timelineInfo.Categories[index].timeline;
-        int order = -1;
-        int i = 0;
-        TimePoint current = null;
-        foreach (var data in list)
-        {
-            if (order != data.order)
-            {
-                order = data.order;
-                current = GetOrCreateTimePoint(i);
-                current.ResetData();
-                i++;
-            }
-            current.SetData(data);
-            current.gameObject.SetActive(true);
-        }
-        for (int j = i; j < timelineList.Count; j++)
-        {
-            timelineList[j].gameObject.SetActive(false);
-        }
-
-        scrollView.verticalNormalizedPosition = 1;
-    }*/
-
-    private TimePoint GetOrCreateTimePoint(int index)
-    {
-        Assert.IsFalse(index > timelineList.Count);
-        TimePoint result;
-        if (index == timelineList.Count)
-        {
-            result = Instantiate(timePointPrefab, scrollView.content);
-            timelineList.Add(result);
-        }
-        else
-        {
-            result = timelineList[index];
-        }
-        return result;
+        popup.SetData(data);
+        popup.ShowPopup();
     }
 }

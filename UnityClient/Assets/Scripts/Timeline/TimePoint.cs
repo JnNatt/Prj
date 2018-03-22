@@ -28,6 +28,8 @@ public class TimePoint : MonoBehaviour
     private float baseLineWidth;
     private Vector2 baseAnchor;
 
+    public event Action<TimepointData> OnTimepointClickE;
+
     private void Start()
     {
         if (isTitlePoint) return;
@@ -45,7 +47,10 @@ public class TimePoint : MonoBehaviour
         }
         else
         {
-            
+            if (OnTimepointClickE != null)
+            {
+                OnTimepointClickE(icon == thai ? dataTh : dataW);
+            }
         }
     }
 

@@ -22,6 +22,8 @@ public class TimelineScaleManager : MonoBehaviour
     [SerializeField][Tooltip("This is for determine how close must timepoint be to hide the label of time scale")]
     private float threshold = 100f;
 
+    private float timescaleGroupOffset;
+
     [SerializeField] private string beforeHistoryFormat = "{0} ปีก่อนปัจจุบัน";
     [SerializeField] private string historyFormat = "ค.ศ.{0}";
     [SerializeField] private List<Abbreviation> abbreForNumber;
@@ -29,6 +31,8 @@ public class TimelineScaleManager : MonoBehaviour
     [SerializeField] private int startPoint = -3000000;
     [SerializeField][Tooltip("If data is longer than endpoint, this will be ignored")] private int endPoint = 2025;
     [SerializeField] private List<ScaleElement> scaleSetting;
+
+    public event Action<TimepointData> OnTimepointClickE;
 
     private readonly List<ScaleGroup> scaleSetList = new List<ScaleGroup>();
     private static readonly List<ScaleData> scaleData = new List<ScaleData>();
@@ -114,6 +118,14 @@ public class TimelineScaleManager : MonoBehaviour
         var height = TimeScaleGroup.rect.height;
         _scrollView.content.sizeDelta = new Vector2(_scrollView.content.sizeDelta.x, height);
         Line.sizeDelta = new Vector2(Line.sizeDelta.x, height + offset);
+        timescaleGroupOffset = TimeScaleGroup.anchoredPosition.y;
+    }
+
+    public void JumpToCategory(int id)
+    {
+        var pos = Mathf.Abs(timepointTitleData[id].positionInTimeline);
+        _scrollView.content.anchoredPosition = new Vector2(0, pos);
+
     }
 
     #region Timepoint Management
@@ -136,7 +148,8 @@ public class TimelineScaleManager : MonoBehaviour
         for (int i = 0; i < categories.Count; i++)
         {
             var cat = categories[i];
-            AddTimepointTitleData(cat.name, cat.startPoint);
+            var title = AddTimepointTitleData(cat.name, cat.startPoint);
+            title.Id = i;
             var order = -1;
             TimepointDataSet current = null;
             var iconOffset = 0f;
@@ -192,7 +205,7 @@ public class TimelineScaleManager : MonoBehaviour
             TimepointDataSet.selected = timepointData.First(data => data.Id == point.Id);
         };
     }
-    private void AddTimepointTitleData(string title, int point)
+    private TimepointDataSet AddTimepointTitleData(string title, int point)
     {
         ScaleData scale;
         var data = new TimepointDataSet
@@ -207,6 +220,7 @@ public class TimelineScaleManager : MonoBehaviour
             scale = scale
         };
         timepointTitleData.Add(data);
+        return data;
     }
 
     private TimepointDataSet AddTimepointData(TimepointData data)
@@ -279,6 +293,7 @@ public class TimelineScaleManager : MonoBehaviour
             timepoint.Init();
             timepoint.Id = pool.Count;
             pool.Add(timepoint);
+            timepoint.OnTimepointClickE += OnTimepointClickE;
         }
         timepoint.gameObject.SetActive(true);
         return timepoint;
