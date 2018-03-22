@@ -1,10 +1,8 @@
 ﻿#if UNITY_EDITOR
-using UnityEngine;
-using System.Collections;
-using System;
-using UnityEditor;
 using System.IO;
 using System.Xml;
+using UnityEditor;
+using UnityEngine;
 
 public static class BitmapFontImporter
 {
