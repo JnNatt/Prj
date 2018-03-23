@@ -68,6 +68,7 @@ public class NetworkManager : MonoBehaviour
                 request.headers.Add(pair.Key, pair.Value);
             }
         }
+        request.timeout = 2;
 
         switch (method)
         {
