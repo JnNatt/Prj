@@ -120,6 +120,10 @@ public class TimelineScaleManager : MonoBehaviour
 
     public void JumpToCategory(int id)
     {
+        if (id >= timepointTitleData.Count || id < 0)
+        {
+            return;
+        }
         var pos = Mathf.Abs(timepointTitleData[id].positionInTimeline);
         _scrollView.content.anchoredPosition = new Vector2(0, pos);
 
@@ -302,6 +306,22 @@ public class TimelineScaleManager : MonoBehaviour
         }
         timepoint.gameObject.SetActive(true);
         return timepoint;
+    }
+
+    private void GiveTimepointBackToPool(TimepointDataSet data)
+    {
+        if (timepointMapping.ContainsKey(data))
+        {
+            timepointMapping[data].gameObject.SetActive(false);
+        }
+    }
+
+    private void GiveTitleBackToPool(TimepointDataSet data)
+    {
+        if (titleMapping.ContainsKey(data))
+        {
+            titleMapping[data].gameObject.SetActive(false);
+        }
     }
 
     private bool IsTimepointVisibleInView(TimepointDataSet timepoint, float offset = 0f)
@@ -590,7 +610,7 @@ public class TimelineScaleManager : MonoBehaviour
     {
         while (prevTitle < timepointTitleData.Count - 1 && !IsTimepointNotAboveView(timepointTitleData[prevTitle], _timepointOffset))
         {
-            titleMapping[timepointTitleData[prevTitle]].gameObject.SetActive(false);
+            GiveTitleBackToPool(timepointTitleData[prevTitle]);
             prevTitle++;
         }
 
@@ -605,7 +625,7 @@ public class TimelineScaleManager : MonoBehaviour
     {
         while (nextTitle > 0 && !IsTimepointNotBelowView(timepointTitleData[nextTitle - 1], _timepointOffset))
         {
-            titleMapping[timepointTitleData[nextTitle - 1]].gameObject.SetActive(false);
+            GiveTitleBackToPool(timepointTitleData[nextTitle - 1]);
             nextTitle--;
         }
 
@@ -621,7 +641,7 @@ public class TimelineScaleManager : MonoBehaviour
     {
         while (prevTimepoint < timepointData.Count && !IsTimepointNotAboveView(timepointData[prevTimepoint], _timepointOffset))
         {
-            timepointMapping[timepointData[prevTimepoint]].gameObject.SetActive(false);
+            GiveTimepointBackToPool(timepointData[prevTimepoint]);
             prevTimepoint++;
         }
         while (nextTimepoint < timepointData.Count && IsTimepointNotBelowView(timepointData[nextTimepoint], _timepointOffset))
@@ -635,7 +655,7 @@ public class TimelineScaleManager : MonoBehaviour
     {
         while (nextTimepoint > 0 && !IsTimepointNotBelowView(timepointData[nextTimepoint - 1], _timepointOffset))
         {
-            timepointMapping[timepointData[nextTimepoint - 1]].gameObject.SetActive(false);
+            GiveTimepointBackToPool(timepointData[nextTimepoint - 1]);
             nextTimepoint--;
         }
 
