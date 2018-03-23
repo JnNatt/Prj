@@ -26,6 +26,7 @@ public class TimelineManager : MonoBehaviour
 	    Time.timeScale = 0;
 	    if (timelineInfo == null)
 	    {
+            Debug.Log("Getting data from server...");
 	        NetworkManager.Instance.GetTimelineInfo(info =>
 	        {
                 Debug.Log("received!");
@@ -35,7 +36,8 @@ public class TimelineManager : MonoBehaviour
         }
 	    else
 	    {
-	        Init();
+	        Debug.Log("Already got data from the server.");
+            Init();
         }
 	}
 

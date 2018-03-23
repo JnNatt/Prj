@@ -88,25 +88,24 @@ public class NetworkManager : MonoBehaviour
         {
             throw new Exception("Wrong Http Method.");
         }
-        return call;
+        return call.Catch(err =>
+        {
+            Debug.LogError("Error from server!");
+            throw err;
+        });
     }
 
     private static IPromise<NetworkResult> FormatResult(IPromise<ResponseHelper> call)
     {
         return call.Then(response =>
         {
-            try
-            {
-                var result = JsonConvert.DeserializeObject<NetworkResult>(response.text);
-                return result;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Cannot deserialize the response to NetworkResult format : \n"
-                    + response.text);
-                throw;
-            }
+            var result = JsonConvert.DeserializeObject<NetworkResult>(response.text);
+            return result;
 
+        }).Catch(err =>
+        {
+            Debug.LogError("Cannot deserialize the response to NetworkResult format!");
+            throw err;
         });
     }
 
@@ -185,7 +184,7 @@ public class NetworkManager : MonoBehaviour
             };
 
             callback(timelineInfo);
-        });
+        }).Catch(err => { throw err; });
     }
 
 }
