@@ -23,7 +23,7 @@ public class TimelineManager : MonoBehaviour
 	void Start ()
 	{
         SceneLoader.Instance.CameraBlack();
-	    Time.timeScale = 0;
+	    //Time.timeScale = 0;
 	    if (timelineInfo == null)
 	    {
             Debug.Log("Getting data from server...");
