@@ -235,7 +235,6 @@ public class TimelineScaleManager : MonoBehaviour
 
     private TimepointDataSet AddTimepointData(TimepointData data)
     {
-        Debug.Log("Adding new timepoint object...");
         ScaleData scale;
         var dataSet = new TimepointDataSet
         {
@@ -285,6 +284,7 @@ public class TimelineScaleManager : MonoBehaviour
     }
     private TimePoint GenerateNewTimepoint(TimepointDataSet data)
     {
+        Debug.Log("Adding new timepoint object...");
         var timepoint = GetTimepointFromPool(timepointList, timepointPrefab);
         TimepointLoaded(timepoint, data);
         if (timepointMapping.ContainsKey(data)) timepointMapping[data] = timepoint;
