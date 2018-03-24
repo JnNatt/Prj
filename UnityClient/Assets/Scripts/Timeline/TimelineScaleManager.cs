@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -234,6 +235,7 @@ public class TimelineScaleManager : MonoBehaviour
 
     private TimepointDataSet AddTimepointData(TimepointData data)
     {
+        Debug.Log("Adding new timepoint object...");
         ScaleData scale;
         var dataSet = new TimepointDataSet
         {
@@ -778,9 +780,10 @@ public class TimelineScaleManager : MonoBehaviour
         //Only hide scale label if there is data on left side (Thai history)
         if (data.th != null)
         {
-            //Check if this timepoint actually out of scale
+            //Check if this timepoint is actually out of scale
             if (data.scale == null)
             {
+                Debug.LogWarning("A timepoint is out of scale range : [" + data.th.order + "] " + data.th.title);
                 return;
             }
             var scale = scaleMapping[data.scale];
