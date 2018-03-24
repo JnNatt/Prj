@@ -43,33 +43,24 @@ public class TimelineManager : MonoBehaviour
 
     void Init()
     {
-        try
+        timelineScaleManager.Init();
+        categoryDropdown.ClearOptions();
+        if (timelineInfo != null && timelineInfo.Categories != null)
         {
-            timelineScaleManager.Init();
-            categoryDropdown.ClearOptions();
-            if (timelineInfo != null && timelineInfo.Categories != null)
-            {
-                timelineScaleManager.InitTimepoint(timelineInfo.Categories);
-                var list = timelineInfo.Categories.Select(cat => cat.name).ToList();
-                categoryDropdown.AddOptions(list);
-            }
-            categoryDropdown.onValueChanged.AddListener(index =>
-            {
-                Debug.Log(index);
-                JumpToCategory(index);
-            });
-            timelineScaleManager.OnTimepointClickE += ShowPopup;
-
-            JumpToCategory(0);
-
-            SceneLoader.Instance.FadeIn(.5f);
+            timelineScaleManager.InitTimepoint(timelineInfo.Categories);
+            var list = timelineInfo.Categories.Select(cat => cat.name).ToList();
+            categoryDropdown.AddOptions(list);
         }
-        catch (Exception e)
+        categoryDropdown.onValueChanged.AddListener(index =>
         {
-            Debug.LogError("There is some error in callback function : " + e.Message + e.StackTrace);
-            throw;
-        }
-        
+            Debug.Log(index);
+            JumpToCategory(index);
+        });
+        timelineScaleManager.OnTimepointClickE += ShowPopup;
+
+        JumpToCategory(0);
+
+        SceneLoader.Instance.FadeIn(.5f);
     }
 
     private void JumpToCategory(int index)
