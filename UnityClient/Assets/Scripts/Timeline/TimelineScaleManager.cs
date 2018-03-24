@@ -778,6 +778,11 @@ public class TimelineScaleManager : MonoBehaviour
         //Only hide scale label if there is data on left side (Thai history)
         if (data.th != null)
         {
+            //Check if this timepoint actually out of scale
+            if (data.scale == null)
+            {
+                return;
+            }
             var scale = scaleMapping[data.scale];
             if (Mathf.Abs(GetPositionOnTimeScale(data.scale.Start) - data.positionInTimeline + _timepointOffset) <= threshold)
             {
