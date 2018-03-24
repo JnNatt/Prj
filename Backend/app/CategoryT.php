@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryT extends Model
 {
     protected $table = 'lesson';
-    protected $primaryKey = 'id_category_lesson';
+    protected $primaryKey = 'id_category';
 
     protected $appends = ['category_id', 'name', 'timeline'];
     protected $visible = ['category_id', 'name', 'start_point', 'timeline'];
@@ -23,10 +23,10 @@ class CategoryT extends Model
         return $this->attributes[$this->primaryKey];
     }
     public function getNameAttribute(){
-        return $this->attributes['category_lesson'];
+        return $this->attributes['category'];
     }
     public function setNameAttribute($value){
-        return $this->attributes['category_lesson'] = $value;
+        return $this->attributes['category'] = $value;
     }
     public function getTimelineAttribute(){
         return $this->timelineW()->get()->concat($this->timelineTh()->get())->sortBy('order')->values();
