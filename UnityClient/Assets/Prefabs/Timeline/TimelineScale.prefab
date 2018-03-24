@@ -278,6 +278,8 @@ MonoBehaviour:
   - gapPerSet: 500
     setCount: 2
   - gapPerSet: 100
+    setCount: 10
+  - gapPerSet: 10
     setCount: -1
 --- !u!222 &222050268607299066
 CanvasRenderer:

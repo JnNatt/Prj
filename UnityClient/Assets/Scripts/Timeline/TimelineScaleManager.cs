@@ -606,6 +606,8 @@ public class TimelineScaleManager : MonoBehaviour
         }
     }
 
+    public event Action<int> OnCategoryChangeE; 
+
     private void NextTimepointTitleItem()
     {
         while (prevTitle < timepointTitleData.Count - 1 && !IsTimepointNotAboveView(timepointTitleData[prevTitle], _timepointOffset))
@@ -617,6 +619,10 @@ public class TimelineScaleManager : MonoBehaviour
         while (nextTitle < timepointTitleData.Count && IsTimepointNotBelowView(timepointTitleData[nextTitle], _timepointOffset * 2))
         {
             RecycleTimepointTitleItem(ScrollDirection.NEXT);
+            if (OnCategoryChangeE != null)
+            {
+                OnCategoryChangeE(nextTitle);
+            }
             nextTitle++;
         }
     }
@@ -633,6 +639,10 @@ public class TimelineScaleManager : MonoBehaviour
         {
             prevTitle--;
             RecycleTimepointTitleItem(ScrollDirection.PREVIOUS);
+            if (OnCategoryChangeE != null)
+            {
+                OnCategoryChangeE(prevTitle);
+            }
         }
         
     }

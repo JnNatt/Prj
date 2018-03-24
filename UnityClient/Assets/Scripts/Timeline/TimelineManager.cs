@@ -20,6 +20,8 @@ public class TimelineManager : MonoBehaviour
 
     public DetailPopup popup;
 
+    private bool _setCategory;
+
 	void Start ()
 	{
         SceneLoader.Instance.CameraBlack();
@@ -53,9 +55,19 @@ public class TimelineManager : MonoBehaviour
         }
         categoryDropdown.onValueChanged.AddListener(index =>
         {
+            if (_setCategory)
+            {
+                return;
+            }
             Debug.Log(index);
             JumpToCategory(index);
         });
+        timelineScaleManager.OnCategoryChangeE += i =>
+        {
+            _setCategory = true;
+            categoryDropdown.value = i;
+            _setCategory = false;
+        };
         timelineScaleManager.OnTimepointClickE += ShowPopup;
 
         JumpToCategory(0);
@@ -73,4 +85,6 @@ public class TimelineManager : MonoBehaviour
         popup.SetData(data);
         popup.ShowPopup();
     }
+
+
 }
