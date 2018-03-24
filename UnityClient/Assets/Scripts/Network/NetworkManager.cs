@@ -194,6 +194,11 @@ public class NetworkManager : MonoBehaviour
                 categories.Add(cat);
             }
             timeline.Categories = categories;*/
+            if (String.IsNullOrEmpty(response.text))
+            {
+                Debug.LogError("There is something wrong with the response!");
+                Debug.LogError(JsonConvert.SerializeObject(response));
+            }
             var categories = JsonConvert.DeserializeObject<List<Category>>(response.text);
             var timelineInfo = new TimelineInfo
             {
@@ -201,7 +206,12 @@ public class NetworkManager : MonoBehaviour
             };
 
             callback(timelineInfo);
-        }).Catch(err => { throw err; });
+        }).Catch(err =>
+        {
+            Debug.LogError("Error when trying to get timeline data!");
+            Debug.LogError(err);
+            throw err;
+        });
     }
 
 }
