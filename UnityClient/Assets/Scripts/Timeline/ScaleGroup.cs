@@ -7,4 +7,6 @@ public class ScaleGroup : MonoBehaviour
     public Text MiddleLabel;
     public int start;
     public int gap;
+
+    public ScaleData data;
 }

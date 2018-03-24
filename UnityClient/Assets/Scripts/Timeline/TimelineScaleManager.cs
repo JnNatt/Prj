@@ -54,21 +54,6 @@ public class TimelineScaleManager : MonoBehaviour
         public int setCount = 1;
     }
 
-    public class ScaleData
-    {
-        public int Start;
-        public int Gap;
-
-        public int Middle
-        {
-            get { return Start + Gap / 2; }
-        }
-        public int End
-        {
-            get { return Start + Gap; }
-        }
-    }
-
     public class TimepointDataSet
     {
         public int Id;
@@ -284,7 +269,6 @@ public class TimelineScaleManager : MonoBehaviour
     }
     private TimePoint GenerateNewTimepoint(TimepointDataSet data)
     {
-        Debug.Log("Adding new timepoint object...");
         var timepoint = GetTimepointFromPool(timepointList, timepointPrefab);
         TimepointLoaded(timepoint, data);
         if (timepointMapping.ContainsKey(data)) timepointMapping[data] = timepoint;
@@ -333,13 +317,21 @@ public class TimelineScaleManager : MonoBehaviour
 
     private bool IsTimepointNotAboveView(TimepointDataSet timepoint, float offset = 0f)
     {
-        return -timepoint.positionInTimeline >= _scrollView.content.anchoredPosition.y + _timepointGroupOffset - offset;
+        return !IsAboveView(timepoint.positionInTimeline, offset);
     }
 
     private bool IsTimepointNotBelowView(TimepointDataSet timepoint, float offset = 0f)
     {
-        return -timepoint.positionInTimeline <=
-               _scrollView.content.anchoredPosition.y + _timepointGroupOffset + _scrollView.viewport.rect.height + offset;
+        return !IsBelowView(timepoint.positionInTimeline, offset);
+    }
+
+    private bool IsAboveView(float yPosition, float offset = 0f)
+    {
+        return -yPosition < GetContentPosition() + _timepointGroupOffset - offset;
+    }
+    private bool IsBelowView(float yPosition, float offset = 0f)
+    {
+        return -yPosition > GetContentPosition() + _timepointGroupOffset + _scrollView.viewport.rect.height + offset;
     }
 
     #endregion
@@ -354,7 +346,7 @@ public class TimelineScaleManager : MonoBehaviour
         }
 
         _itemSize = (scaleGroupPref.transform as RectTransform).rect.height;
-        _itemsVisible = Mathf.CeilToInt(_scrollView.viewport.rect.height / _itemSize);
+        _itemsVisible = Mathf.CeilToInt(_scrollView.viewport.rect.height / _itemSize) + 1;
         _itemsTotal = scaleData.Count;
         int itemsToInstantiate = _itemsVisible;
         if (_itemsVisible == 1)
@@ -446,13 +438,16 @@ public class TimelineScaleManager : MonoBehaviour
     private ScaleGroup CreateNewScaleSet(ScaleData data)
     {
         var set = Instantiate(scaleGroupPref, TimeScaleGroup);
-        SetData(set, data.Start, data.Gap);
+        SetScaleData(set, data);
         scaleMapping.Add(data, set);
         return set;
     }
 
-    private void SetData(ScaleGroup scaleSet, int start, int gap)
+    private void SetScaleData(ScaleGroup scaleSet, ScaleData data)
     {
+        scaleSet.data = data;
+        var start = data.Start;
+        var gap = data.Gap;
         var beforeHistory = start < 0;
         scaleSet.start = start;
         scaleSet.gap = gap;
@@ -658,7 +653,8 @@ public class TimelineScaleManager : MonoBehaviour
         }
         while (nextTimepoint < timepointData.Count && IsTimepointNotBelowView(timepointData[nextTimepoint], _timepointOffset))
         {
-            RecycleTimepointItem(ScrollDirection.NEXT);
+            if(IsTimepointNotAboveView(timepointData[nextTimepoint]))
+                RecycleTimepointItem(ScrollDirection.NEXT);
             nextTimepoint++;
         }
     }
@@ -674,7 +670,8 @@ public class TimelineScaleManager : MonoBehaviour
         while (prevTimepoint > 0 && IsTimepointNotAboveView(timepointData[prevTimepoint - 1], _timepointOffset * 2))
         {
             prevTimepoint--;
-            RecycleTimepointItem(ScrollDirection.PREVIOUS);
+            if(IsTimepointNotBelowView(timepointData[prevTimepoint]))
+                RecycleTimepointItem(ScrollDirection.PREVIOUS);
             
         }
     }
@@ -759,8 +756,11 @@ public class TimelineScaleManager : MonoBehaviour
 
     private void ScaleLoaded(ScaleGroup item, int index)
     {
+        if(item.data != null) scaleMapping[item.data] = null;
+
         var data = scaleData[index];
-        SetData(item, data.Start, data.Gap);
+        SetScaleData(item, data);
+        
         scaleMapping[data] = item;
     }
 
@@ -780,10 +780,9 @@ public class TimelineScaleManager : MonoBehaviour
         //Only hide scale label if there is data on left side (Thai history)
         if (data.th != null)
         {
-            //Check if this timepoint is actually out of scale
-            if (data.scale == null)
+            //Check if this timepoint is actually out of scale in view
+            if (data.scale == null || scaleMapping[data.scale] == null)
             {
-                Debug.LogWarning("A timepoint is out of scale range : [" + data.th.order + "] " + data.th.title);
                 return;
             }
             var scale = scaleMapping[data.scale];
