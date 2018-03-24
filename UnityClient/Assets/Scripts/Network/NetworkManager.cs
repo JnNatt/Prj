@@ -174,7 +174,9 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                callback(result.data.ToObject<FormValidation>());
+                callback(!String.IsNullOrEmpty(result.error)
+                    ? new FormValidation {error = result.error}
+                    : result.data.ToObject<FormValidation>());
             }
         });
     }
@@ -194,7 +196,7 @@ public class NetworkManager : MonoBehaviour
                 categories.Add(cat);
             }
             timeline.Categories = categories;*/
-            if (String.IsNullOrEmpty(response.text))
+            if (!String.IsNullOrEmpty(response.error) || String.IsNullOrEmpty(response.text))
             {
                 Debug.LogError("There is something wrong with the response!");
                 Debug.LogError(JsonConvert.SerializeObject(response));

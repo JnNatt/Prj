@@ -65,29 +65,35 @@ public class HomeController : MonoBehaviour
 
     private void OnRegister(string email, string username, string password)
     {
-        SignupGroup.errorTextEmail.gameObject.SetActive(false);
-        SignupGroup.errorTextUsername.gameObject.SetActive(false);
-        SignupGroup.errorTextPassword.gameObject.SetActive(false);
+        SignupGroup.ResetErrorText();
         SignupGroup.registerBtn.interactable = false;
         NetworkManager.Instance.Register(email, username, password, error =>
         {
             if (error != null)
             {
                 SignupGroup.registerBtn.interactable = true;
-                if (error.Email.Any())
+                if (!String.IsNullOrEmpty(error.error))
                 {
-                    SignupGroup.errorTextEmail.text = error.Email.First();
-                    SignupGroup.errorTextEmail.gameObject.SetActive(true);
+                    SignupGroup.errorText.text = error.error;
+                    SignupGroup.errorText.gameObject.SetActive(true);
                 }
-                if (error.Username.Any())
+                else
                 {
-                    SignupGroup.errorTextUsername.text = error.Username.First();
-                    SignupGroup.errorTextUsername.gameObject.SetActive(true);
-                }
-                if (error.Password.Any())
-                {
-                    SignupGroup.errorTextPassword.text = error.Password.First();
-                    SignupGroup.errorTextPassword.gameObject.SetActive(true);
+                    if (error.Email.Any())
+                    {
+                        SignupGroup.errorTextEmail.text = error.Email.First();
+                        SignupGroup.errorTextEmail.gameObject.SetActive(true);
+                    }
+                    if (error.Username.Any())
+                    {
+                        SignupGroup.errorTextUsername.text = error.Username.First();
+                        SignupGroup.errorTextUsername.gameObject.SetActive(true);
+                    }
+                    if (error.Password.Any())
+                    {
+                        SignupGroup.errorTextPassword.text = error.Password.First();
+                        SignupGroup.errorTextPassword.gameObject.SetActive(true);
+                    }
                 }
             }
             else
