@@ -105,6 +105,22 @@ public class DetailPopup : MonoBehaviour
             {
                 var hover = CustomStandaloneInputModule.GetPointerEventData().hovered;
                 var hidePopup = hover.Contains(blocker.gameObject);
+                if (!hidePopup)
+                {
+                    if (hover.Contains(popupObj.gameObject))
+                    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+                        Vector2 pos = Input.mousePosition;
+
+#else
+                        Vector2 pos = Input.GetTouch(0).position;
+#endif
+                        if (pos.y > 915.2 || pos.x < 233.5 || pos.x > 1686.5)
+                        {
+                            hidePopup = true;
+                        }
+                    }
+                }
                 if (hidePopup)
                 {
                     break;

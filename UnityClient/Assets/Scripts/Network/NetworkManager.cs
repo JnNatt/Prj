@@ -178,24 +178,18 @@ public class NetworkManager : MonoBehaviour
                     ? new FormValidation {error = result.error}
                     : result.data.ToObject<FormValidation>());
             }
+        }).Catch(exception =>
+        {
+            Debug.LogError("Error when trying to register!");
+            Debug.LogError(exception);
+            throw exception;
         });
     }
-
-    //private static 
+    
     public void GetTimelineInfo(Action<TimelineInfo> callback)
     {
         Call("api/timeline", Method.GET).Then(response =>
         {
-            /*var jToken = JToken.Parse(response.text);
-            var timeline = new TimelineInfo();
-            List<Category> categories = new List<Category>();
-            foreach (var item in jToken.Children())
-            {
-                var cat = new Category();
-                cat = item.ToObject<Category>();
-                categories.Add(cat);
-            }
-            timeline.Categories = categories;*/
             if (!String.IsNullOrEmpty(response.error) || String.IsNullOrEmpty(response.text))
             {
                 Debug.LogError("There is something wrong with the response!");
