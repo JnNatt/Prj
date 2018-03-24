@@ -92,6 +92,7 @@ public class NetworkManager : MonoBehaviour
         return call.Catch(err =>
         {
             Debug.LogError("Error from server!");
+            Debug.LogError(err);
             throw err;
         });
     }
@@ -100,12 +101,21 @@ public class NetworkManager : MonoBehaviour
     {
         return call.Then(response =>
         {
+            if (!String.IsNullOrEmpty(response.error) && String.IsNullOrEmpty(response.text))
+            {
+                return new NetworkResult
+                {
+                    error = response.error,
+                    success = false
+                };
+            }
+            Debug.Log("Trying to format response into NetworkResult response...");
             var result = JsonConvert.DeserializeObject<NetworkResult>(response.text);
             return result;
-
         }).Catch(err =>
         {
             Debug.LogError("Cannot deserialize the response to NetworkResult format!");
+            Debug.LogError(err);
             throw err;
         });
     }
@@ -116,6 +126,7 @@ public class NetworkManager : MonoBehaviour
         public string username;
         public string password;
     }
+
     public void Login(string username, string password, Action<string> callback)
     {
         var param = new LoginParams
@@ -123,14 +134,19 @@ public class NetworkManager : MonoBehaviour
             username = username,
             password = password
         };
-
+        Debug.Log("Loggin in...");
         FormatResult(Call("api/login", Method.POST, param)).Then(result =>
         {
             if (result.success)
             {
                 token = result.data.Value<string>("token");
             }
-            callback(result.success?"":result.error);
+            callback(result.success ? "" : result.error);
+        }).Catch(exception =>
+        {
+            Debug.LogError("Error when trying to login!");
+            Debug.LogError(exception);
+            throw exception;
         });
     }
     [Serializable]
