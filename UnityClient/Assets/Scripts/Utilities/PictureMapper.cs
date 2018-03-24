@@ -21,11 +21,15 @@ public class PictureMapper : MonoBehaviour
 
     void Start()
     {
-        for (var index = 0; index < mapping.Count; index++)
+        if (PictureMapping.Count == 0)
         {
-            var item = mapping[index];
-            PictureMapping.Add(index, item);
+            for (var index = 0; index < mapping.Count; index++)
+            {
+                var item = mapping[index];
+                PictureMapping.Add(index, item);
+            }
         }
+        
     }
 
     public static Sprite GetIconPic(int timepointId)
